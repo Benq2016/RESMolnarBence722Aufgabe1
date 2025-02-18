@@ -62,5 +62,15 @@ public class Main {
         Main main = new Main();
         List<Main.Evenimente> events = main.readData("src/evenimente.xml");
 
+        System.out.println("Enter a character: ");
+        Scanner scanner = new Scanner(System.in);
+        int input = scanner.nextInt();
+
+        events.stream().filter(e -> e.globalerEinfluss >= Double.parseDouble(String.valueOf(input)))
+                .distinct()
+                .forEach(System.out::println);
+
+
     }
+
 }
