@@ -8,15 +8,14 @@ import src.Konfrontationstyp;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.Character.isLowerCase;
 import static java.lang.Character.toUpperCase;
@@ -66,21 +65,39 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int input = scanner.nextInt();
 
-        events.stream().filter(e ->e.globalerEinfluss >= Double.parseDouble(String.valueOf(input)))
+        events.stream().filter(e -> e.globalerEinfluss >= Double.parseDouble(String.valueOf(input)))
                 .distinct()
                 .forEach(System.out::println);
 
         events.stream()
-                .filter(e->e.konfrontationstyp.equals(Konfrontationstyp.Galaktisch))
-                .sorted(Comparator.comparing(akt-> {
+                .filter(e -> e.konfrontationstyp.equals(Konfrontationstyp.Galaktisch))
+                .sorted(Comparator.comparing(akt -> {
                     try {
                         return new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(akt.datum));
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
                 }))
-                .forEach(e->System.out.printf("%s: %s vs. %s - %s%n", e.datum, e.held, e.antagonist, e.ort));
+                .forEach(e -> System.out.printf("%s: %s vs. %s - %s%n", e.datum, e.held, e.antagonist, e.ort));
+
+
+//        Map<House, Integer> housePoints = new HashMap<>();
+//        for (Evenimente event : events) {
+//            housePoints.put(event.house, housePoints.getOrDefault(record.house, 0) + record.points);
+//        }
+//        List<Map.Entry<House, Integer>> sortedHouse = housePoints.entrySet().stream()
+//                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+//                .toList();
+//        writeResults(sortedHouse);
+//        System.out.println("The Data was transferred!");
+
+
+//    public static void writeResults(List<Map.Entry<House, Integer>> sortedHouse) throws IOException {
+//        try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/Aufgabe1/ergebnisCSV.csv"))) {
+//            for (Map.Entry<House, Integer> entry : sortedHouse) {
+//                writer.write(entry.getKey() + "," + entry.getValue() + "\n");
+//            }
+//        }
+//    }
     }
-
-
 }
