@@ -66,11 +66,21 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int input = scanner.nextInt();
 
-        events.stream().filter(e -> e.globalerEinfluss >= Double.parseDouble(String.valueOf(input)))
+        events.stream().filter(e ->e.globalerEinfluss >= Double.parseDouble(String.valueOf(input)))
                 .distinct()
                 .forEach(System.out::println);
 
-
+        events.stream()
+                .filter(e->e.konfrontationstyp.equals(Konfrontationstyp.Galaktisch))
+                .sorted(Comparator.comparing(akt-> {
+                    try {
+                        return new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(akt.datum));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }))
+                .forEach(e->System.out.printf("%s: %s vs. %s - %s%n", e.datum, e.held, e.antagonist, e.ort));
     }
+
 
 }
